@@ -20,11 +20,33 @@ const InputSection = () => {
     };
 
     const convertWitnessesStringToArray = (witnessesString) => {
+        let witnessesArray = [];
+
         if (witnessesString.includes('.')) {
-            return witnessesString.replace(/\s/g, '').split('.').filter((i) => i !== '');
+            witnessesArray = witnessesString.replace(/\s/g, '').split('.').filter((i) => i !== '');
         } else {
-            return witnessesString.split(' ').filter((i) => i !== '')
+            witnessesArray = witnessesString.split(' ').filter((i) => i !== '')
         }
+
+        witnessesArray.map((w) => {
+            if (w.includes('*')) {
+                let newW = w.replace('*', '');
+                let wIndex = witnessesArray.indexOf(w);
+                witnessesArray[wIndex] = newW;
+            } else if (w.includes('CV')) {
+                let wIndex = witnessesArray.indexOf(w);
+                witnessesArray.splice(wIndex, 1);
+            } else if (w.includes('C')) {
+                let wIndex = witnessesArray.indexOf(w);
+                witnessesArray.splice(wIndex, 1);
+            } else if (w.includes('V')) {
+                let newW = w.replace('V', '');
+                let wIndex = witnessesArray.indexOf(w);
+                witnessesArray[wIndex] = newW;
+            }
+        })
+
+        return witnessesArray;
     }
 
     const handleAddVariant = () => {
